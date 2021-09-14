@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.Api", "BitlyAssistant.Api\BitlyAssistant.Api.csproj", "{C0B76F67-E55F-4F21-967B-C293B2E18926}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.Shared", "BitlyAssistant.Shared\BitlyAssistant.Shared.csproj", "{8490D75D-8F7E-4F21-8513-84F67F26966F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.DataAccess", "BitlyAssistant.DataAccess\BitlyAssistant.DataAccess.csproj", "{237E41BF-5921-4F1F-A54D-25677A55C15E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0B76F67-E55F-4F21-967B-C293B2E18926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0B76F67-E55F-4F21-967B-C293B2E18926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0B76F67-E55F-4F21-967B-C293B2E18926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0B76F67-E55F-4F21-967B-C293B2E18926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8490D75D-8F7E-4F21-8513-84F67F26966F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8490D75D-8F7E-4F21-8513-84F67F26966F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8490D75D-8F7E-4F21-8513-84F67F26966F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8490D75D-8F7E-4F21-8513-84F67F26966F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCEDB918-649F-4F61-9F04-1CD3B902AD9E}
+	EndGlobalSection
+EndGlobal
