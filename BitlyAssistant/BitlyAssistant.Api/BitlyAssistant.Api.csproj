@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BitlyAssistant.DataAccess\BitlyAssistant.DataAccess.csproj" />
+    <ProjectReference Include="..\BitlyAssistant.Shared\BitlyAssistant.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
