@@ -1,15 +1,13 @@
+using BitlyAssistant.DataAccess.Bitly;
+using BitlyAssistant.DataAccess.Postgres;
+using BitlyAssistant.DataAccess.Postgres.PostgresWrapper;
+using BitlyAssistant.Shared.DataAccess;
+using BitlyAssistant.Shared.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BitlyAssistant.Api
 {
@@ -28,6 +26,13 @@ namespace BitlyAssistant.Api
 
             services.AddControllers();
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddHttpClient();
+
+            services.AddScoped<IBitlyApiMiddleware, BitlyApiMiddleware>();
+            services.AddScoped<BitlyPostgresConnection, BitlyPostgresConnection>();
+            services.AddScoped<IBitlyRequestDataAccess, BitlyRequestPostgresAccess>();
+            services.AddScoped<IBitlyResponseDataAccess, BitlyResponsePostgresAccess>();
+            services.AddScoped<IShortLinkDataAccess, ShortLinkPostgresAccess>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

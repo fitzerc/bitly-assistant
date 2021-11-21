@@ -23,17 +23,18 @@ namespace BitlyAssistant.Api.Controllers
         private IBitlyRequestDataAccess _dbBitlyRequestAccess;
         private IBitlyResponseDataAccess _dbBitlyResponseAccess;
         private IShortLinkDataAccess _dbShortLinkDataAccess;
-        private HttpClient _httpClient;
 
-        public BitlyAssistantController(IConfiguration config)
+        public BitlyAssistantController(IConfiguration config,
+            IBitlyApiMiddleware api,
+            IBitlyRequestDataAccess bitlyRequestAccess,
+            IBitlyResponseDataAccess bitlyResponseAccess,
+            IShortLinkDataAccess shortLinkAccess)
         {
-            _httpClient = new HttpClient();
-            _bitly = new BitlyApiMiddleware(_httpClient);
+            _bitly = api;
 
-            var dbCon = new BitlyPostgresConnection(config);
-            _dbBitlyRequestAccess = new BitlyRequestPostgresAccess(dbCon);
-            _dbBitlyResponseAccess = new BitlyResponsePostgresAccess(dbCon);
-            _dbShortLinkDataAccess = new ShortLinkPostgresAccess(dbCon);
+            _dbBitlyRequestAccess = bitlyRequestAccess;
+            _dbBitlyResponseAccess = bitlyResponseAccess;
+            _dbShortLinkDataAccess = shortLinkAccess;
         }
 
         [HttpGet]
