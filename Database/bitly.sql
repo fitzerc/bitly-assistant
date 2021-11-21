@@ -10,6 +10,16 @@ CREATE DATABASE bitly
 
 /* Tables */
 /* bitly_request */
+CREATE SEQUENCE public.bitly_request_request_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.bitly_request_request_id_seq
+    OWNER TO postgres;
+
 CREATE TABLE IF NOT EXISTS public.bitly_request
 (
     request_id integer NOT NULL DEFAULT nextval('bitly_request_request_id_seq'::regclass),
@@ -23,6 +33,16 @@ ALTER TABLE public.bitly_request
     OWNER to postgres;
 
 /* bitly_response */
+CREATE SEQUENCE public.bitly_response_response_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.bitly_response_response_id_seq
+    OWNER TO postgres;
+
 CREATE TABLE IF NOT EXISTS public.bitly_response
 (
     response_id integer NOT NULL DEFAULT nextval('bitly_response_response_id_seq'::regclass),
@@ -36,6 +56,16 @@ ALTER TABLE public.bitly_response
     OWNER to postgres;
 
 /* short_link */
+CREATE SEQUENCE public.short_link_short_link_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.short_link_short_link_id_seq
+    OWNER TO postgres;
+
 CREATE TABLE IF NOT EXISTS public.short_link
 (
     short_link_id integer NOT NULL DEFAULT nextval('short_link_short_link_id_seq'::regclass),
@@ -130,6 +160,24 @@ LIMIT 1
 $BODY$;
 
 ALTER FUNCTION public.func_read_request(integer)
+    OWNER TO postgres;
+
+/* func_read_response */
+CREATE OR REPLACE FUNCTION public.func_read_response(
+	resp_id integer,
+	OUT response bitly_response)
+    RETURNS bitly_response
+    LANGUAGE 'sql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+SELECT * FROM bitly_response
+WHERE response_id = resp_id
+ORDER BY response_id
+LIMIT 1
+$BODY$;
+
+ALTER FUNCTION public.func_read_response(integer)
     OWNER TO postgres;
 
 /* func_write_request */
