@@ -8,9 +8,6 @@
       "sslPort": 44399
     }
   },
-  "ConnectionStrings": {
-    "bitlyPostgres": "Server=127.0.0.1;User Id=postgres;Password=yourpassword;Database=bitly;"
-  }
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
