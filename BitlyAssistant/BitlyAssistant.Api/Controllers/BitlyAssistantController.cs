@@ -1,7 +1,13 @@
 ﻿using BitlyAssistant.Api.Requests;
 using BitlyAssistant.DataAccess.Bitly;
+using BitlyAssistant.DataAccess.Postgres;
+using BitlyAssistant.DataAccess.Postgres.PostgresWrapper;
+using BitlyAssistant.Shared.DataAccess;
 using BitlyAssistant.Shared.Middleware;
+using BitlyAssistant.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -13,22 +19,86 @@ namespace BitlyAssistant.Api.Controllers
     [ApiController]
     public class BitlyAssistantController : ControllerBase
     {
-        private const string API_KEY = "ed9381d5eb18d9e0c5f9a78870047d3b95905345";
         private IBitlyApiMiddleware _bitly;
+        private IBitlyRequestDataAccess _dbBitlyRequestAccess;
+        private IBitlyResponseDataAccess _dbBitlyResponseAccess;
+        private IShortLinkDataAccess _dbShortLinkDataAccess;
         private HttpClient _httpClient;
 
-        public BitlyAssistantController()
+        public BitlyAssistantController(IConfiguration config)
         {
             _httpClient = new HttpClient();
             _bitly = new BitlyApiMiddleware(_httpClient);
+
+            var dbCon = new BitlyPostgresConnection(config);
+            _dbBitlyRequestAccess = new BitlyRequestPostgresAccess(dbCon);
+            _dbBitlyResponseAccess = new BitlyResponsePostgresAccess(dbCon);
+            _dbShortLinkDataAccess = new ShortLinkPostgresAccess(dbCon);
         }
 
-        // GET: api/<BitlyAssistantController>
-        [HttpPost]
-        public IEnumerable<string> Post([FromBody] ShortenUrlRequest request)
+        [HttpGet]
+        public IEnumerable<ShortLinkModel> Get()
         {
-            var res = _bitly.ShortenUrl(request.Url, request.Domain);
-            return new string[] { "value1", "value2" };
+            return _dbShortLinkDataAccess.ReadAllShortLinks();
+        }
+
+        // GET api/ShortLinkController/5
+        [HttpGet("{id}")]
+        public ShortLinkModel Get(int id)
+        {
+            var res = _dbShortLinkDataAccess.ReadShortLink(id);
+
+            return res == null
+                ? null
+                : res;
+        }
+
+        // POST api/ShortLinkController
+        [HttpPost]
+        public ShortLinkModel Post([FromBody] ShortenUrlRequest req)
+        {
+            var bitlyResponse = RequestLinkFromBitly(req);
+            if (bitlyResponse == null)
+            {
+                return null;
+            }
+
+            var shortRequest = _bitly.LastRequest;
+            var shortRequestId = _dbBitlyRequestAccess.WriteBitlyRequest(shortRequest);
+            var shortResponseId = _dbBitlyResponseAccess.WriteBitlyResponse(JsonConvert.SerializeObject(bitlyResponse));
+
+            var tempShortLink = new ShortLinkModel()
+            {
+                short_link = bitlyResponse.link,
+                long_link = bitlyResponse.long_url,
+                request_id = shortRequestId,
+                response_id = shortResponseId
+            };
+
+            var newShortLink = WriteShortLink(tempShortLink);
+
+            return newShortLink;
+        }
+
+        private ShortenUrlResponse RequestLinkFromBitly(ShortenUrlRequest req)
+        {
+            if (string.IsNullOrEmpty(req.Url) || string.IsNullOrEmpty(req.Domain)) {
+                return null;
+            }
+
+            return _bitly.ShortenUrl(req.Url, req.Domain);
+        }
+
+        public ShortLinkModel WriteShortLink(ShortLinkModel value)
+        {
+            var id = _dbShortLinkDataAccess.WriteShortLink(value);
+
+            if (id == 0)
+            {
+                return null;
+            }
+
+            return _dbShortLinkDataAccess.ReadShortLink(id);
         }
     }
 }

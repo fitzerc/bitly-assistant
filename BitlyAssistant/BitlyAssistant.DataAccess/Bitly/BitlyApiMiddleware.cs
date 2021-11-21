@@ -12,9 +12,14 @@ namespace BitlyAssistant.DataAccess.Bitly
 {
     public class BitlyApiMiddleware : IBitlyApiMiddleware
     {
-        private const string API_KEY = "yourkey";
+        private const string API_KEY = "ed9381d5eb18d9e0c5f9a78870047d3b95905345";
         private const string GROUP_GUID = "\"Bl9c5rZHHHC\"";
         private readonly HttpClient _httpClient;
+
+        private string _lastRequest = "";
+
+        string IBitlyApiMiddleware.LastRequest => _lastRequest;
+
         public BitlyApiMiddleware(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -31,11 +36,11 @@ namespace BitlyAssistant.DataAccess.Bitly
             return await response.Content.ReadAsStringAsync();
         }
 
-        public ShortLinkModel ShortenUrl(string url, string domain)
+        public ShortenUrlResponse ShortenUrl(string url, string domain)
         {
             var response = ShortenUrlAsync(url, domain).Result;
 
-            return JsonConvert.DeserializeObject<ShortLinkModel>(response);
+            return JsonConvert.DeserializeObject<ShortenUrlResponse>(response);
         }
 
         private async Task<string> ShortenUrlAsync(string url, string domain)
@@ -44,14 +49,20 @@ namespace BitlyAssistant.DataAccess.Bitly
             domain = "\"" + domain + "\"";
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", API_KEY);
-            var values = "{\"group_guid\": " + GROUP_GUID
+            var request = _lastRequest = "{\"group_guid\": " + GROUP_GUID
                 + ", \"domain\": " + domain
                 + ", \"long_url\": " + url
                 + "}";
-            var content = new StringContent(values);
+
+            //TODO: Write request
+
+            var content = new StringContent(request);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             var response = await _httpClient.PostAsync("https://api-ssl.bitly.com/v4/shorten", content);
+
+            //TODO: Write response
+
             return await response.Content.ReadAsStringAsync();
         }
     }
