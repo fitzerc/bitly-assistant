@@ -63,10 +63,14 @@ ALTER TABLE public.short_link
 
 /* Functions */
 /* func_read_all_short_links */
-CREATE FUNCTION public.func_read_all_short_links(OUT short_links short_link)
-    RETURNS short_link
+CREATE OR REPLACE FUNCTION public.func_read_all_short_links(
+	OUT short_links short_link)
+    RETURNS SETOF short_link 
     LANGUAGE 'sql'
-    
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
 AS $BODY$
 SELECT * FROM public.short_link
 $BODY$;
@@ -89,6 +93,27 @@ $BODY$;
 ALTER FUNCTION public.func_read_short_link(integer)
     OWNER TO postgres;
 
+/* func_write_short_link */
+CREATE OR REPLACE FUNCTION public.func_write_short_link(
+	shrt_link text,
+	lng_link text,
+	descr text,
+	req_id integer,
+	resp_id integer,
+	OUT shrt_lnk_id integer)
+    RETURNS integer
+    LANGUAGE 'sql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+INSERT INTO public.short_link(
+	short_link, long_link, description, request_id, response_id, date_added)
+	VALUES (shrt_link, lng_link, descr, req_id, resp_id, NOW()) RETURNING short_link_id;
+$BODY$;
+
+ALTER FUNCTION public.func_write_short_link(text, text, text, integer, integer)
+    OWNER TO postgres;
+
 /* func_read_request */
 CREATE OR REPLACE FUNCTION public.func_read_request(
 	OUT request bitly_request,
@@ -108,48 +133,26 @@ ALTER FUNCTION public.func_read_request(integer)
     OWNER TO postgres;
 
 /* func_write_request */
-CREATE OR REPLACE FUNCTION public.func_write_request(
-	request_string text)
-    RETURNS void
+CREATE FUNCTION public.func_write_request(IN req_string text, OUT req_id integer)
+    RETURNS integer
     LANGUAGE 'sql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
+    
 AS $BODY$
 INSERT INTO public.bitly_request(request_json)
-	VALUES (request_string);
+	VALUES (req_string) RETURNING request_id;
 $BODY$;
 
 ALTER FUNCTION public.func_write_request(text)
     OWNER TO postgres;
 
-/* func_read_response */
-CREATE OR REPLACE FUNCTION public.func_read_response(
-	resp_id integer,
-	OUT response bitly_response)
-    RETURNS bitly_response
-    LANGUAGE 'sql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
-SELECT * FROM bitly_response
-WHERE response_id = resp_id
-ORDER BY response_id
-LIMIT 1
-$BODY$;
-
-ALTER FUNCTION public.func_read_response(integer)
-    OWNER TO postgres;
-
 /* func_write_response */
-CREATE OR REPLACE FUNCTION public.func_write_response(
-	response_string text)
-    RETURNS void
+CREATE FUNCTION public.func_write_response(IN resp_string text, OUT resp_id integer)
+    RETURNS integer
     LANGUAGE 'sql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
+    
 AS $BODY$
 INSERT INTO public.bitly_response(response_json)
-	VALUES (response_string);
+	VALUES (resp_string) RETURNING response_id;
 $BODY$;
 
 ALTER FUNCTION public.func_write_response(text)

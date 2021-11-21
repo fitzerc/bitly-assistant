@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.Api", "BitlyAssistant.Api\BitlyAssistant.Api.csproj", "{C0B76F67-E55F-4F21-967B-C293B2E18926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitlyAssistant.Api", "BitlyAssistant.Api\BitlyAssistant.Api.csproj", "{C0B76F67-E55F-4F21-967B-C293B2E18926}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.Shared", "BitlyAssistant.Shared\BitlyAssistant.Shared.csproj", "{8490D75D-8F7E-4F21-8513-84F67F26966F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitlyAssistant.Shared", "BitlyAssistant.Shared\BitlyAssistant.Shared.csproj", "{8490D75D-8F7E-4F21-8513-84F67F26966F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.DataAccess", "BitlyAssistant.DataAccess\BitlyAssistant.DataAccess.csproj", "{237E41BF-5921-4F1F-A54D-25677A55C15E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitlyAssistant.DataAccess", "BitlyAssistant.DataAccess\BitlyAssistant.DataAccess.csproj", "{237E41BF-5921-4F1F-A54D-25677A55C15E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitlyAssistant.DataAccess.Test", "BitlyAssistant.DataAccess.Test\BitlyAssistant.DataAccess.Test.csproj", "{E21052FB-9B37-4ECA-A0A8-750264E37818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{237E41BF-5921-4F1F-A54D-25677A55C15E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E21052FB-9B37-4ECA-A0A8-750264E37818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E21052FB-9B37-4ECA-A0A8-750264E37818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E21052FB-9B37-4ECA-A0A8-750264E37818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E21052FB-9B37-4ECA-A0A8-750264E37818}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

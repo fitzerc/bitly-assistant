@@ -12,8 +12,8 @@ namespace BitlyAssistant.DataAccess.Bitly
 {
     public class BitlyApiMiddleware : IBitlyApiMiddleware
     {
-        private const string API_KEY = "";
-        private const string GROUP_GUID = "";
+        private const string API_KEY = "yourkey";
+        private const string GROUP_GUID = "\"Bl9c5rZHHHC\"";
         private readonly HttpClient _httpClient;
         public BitlyApiMiddleware(HttpClient httpClient)
         {
@@ -31,11 +31,11 @@ namespace BitlyAssistant.DataAccess.Bitly
             return await response.Content.ReadAsStringAsync();
         }
 
-        public ShortenedUrlResponse ShortenUrl(string url, string domain)
+        public ShortLinkModel ShortenUrl(string url, string domain)
         {
             var response = ShortenUrlAsync(url, domain).Result;
 
-            return JsonConvert.DeserializeObject<ShortenedUrlResponse>(response);
+            return JsonConvert.DeserializeObject<ShortLinkModel>(response);
         }
 
         private async Task<string> ShortenUrlAsync(string url, string domain)
