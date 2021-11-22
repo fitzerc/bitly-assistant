@@ -5,9 +5,20 @@
   </div>
 
   <div style="padding-top: 1rem;">
-    <button (click)="submitClicked()">Submit</button>
+    <button class="btn btn-primary" (click)="submitClicked()">Submit</button>
   </div>
-  <div style="padding-top: 1rem;" *ngFor="let item of items" style="overflow-x: auto">
-    <div>{{item}}</div>
-  </div>
+
+  <table>
+    <thead>
+      <th>Short Url</th>
+      <th>Long Url</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.short_link }}</td>
+        <td>{{ item.date_added }}</td>
+      </tr>
+    </tbody>
+  </table>
+
 </div>

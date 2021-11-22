@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ApiService } from './api.service';
+import { ShortLinkModel } from './models/shorten-link-model';
 
 @Component({
   selector: 'app-root',
@@ -8,21 +10,28 @@ import { ApiService } from './api.service';
 })
 export class AppComponent implements OnInit {
 
-  public items: string[] = [];
+  public items: ShortLinkModel[] = [];
   public currentUrl = '';
+
+  subs: Subscription[] = [];
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
+    this.getUrls();
+  }
+
+  private getUrls(): void {
+    this.subs.push(this.api.getAllUrls().subscribe(res => this.items = res));
   }
 
   public submitClicked(): void {
-    this.items.push(this.currentUrl);
-
     this.api.shortenUrl({
-      Url: this.currentUrl
+      Url: this.currentUrl,
+      Domain: 'bit.ly'
     })
 
+    this.getUrls();
     this.currentUrl = '';
   }
 }
