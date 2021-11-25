@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
 
 namespace BitlyAssistant.Api
 {
@@ -28,7 +29,11 @@ namespace BitlyAssistant.Api
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddHttpClient();
 
-            services.AddScoped<IBitlyApiMiddleware, BitlyApiMiddleware>();
+            var bitlyStringSection = Configuration.GetSection("BitlyStrings");
+            var apiKey = bitlyStringSection.GetValue<string>("apiKey");
+            var groupGuid = bitlyStringSection.GetValue<string>("groupGuid");
+
+            services.AddTransient<IBitlyApiMiddleware>(s => new BitlyApiMiddleware(new HttpClient(), apiKey, groupGuid));
             services.AddScoped<BitlyPostgresConnection, BitlyPostgresConnection>();
             services.AddScoped<IBitlyRequestDataAccess, BitlyRequestPostgresAccess>();
             services.AddScoped<IBitlyResponseDataAccess, BitlyResponsePostgresAccess>();

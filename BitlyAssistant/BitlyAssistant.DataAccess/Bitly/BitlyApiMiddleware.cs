@@ -12,18 +12,20 @@ namespace BitlyAssistant.DataAccess.Bitly
 {
     public class BitlyApiMiddleware : IBitlyApiMiddleware
     {
-        private const string API_KEY = "ed9381d5eb18d9e0c5f9a78870047d3b95905345";
-        private const string GROUP_GUID = "\"Bl9c5rZHHHC\"";
+        private readonly string _apiKey;
+        private readonly string _groupGuid;
         private readonly HttpClient _httpClient;
 
         private string _lastRequest = "";
 
         string IBitlyApiMiddleware.LastRequest => _lastRequest;
 
-        public BitlyApiMiddleware(HttpClient httpClient)
+        public BitlyApiMiddleware(HttpClient httpClient, string apiKey, string groupGuid)
         {
             _httpClient = httpClient;
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", API_KEY);
+            _apiKey = apiKey;
+            _groupGuid = groupGuid;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
 
         public string GetGroupGuid()
@@ -48,8 +50,8 @@ namespace BitlyAssistant.DataAccess.Bitly
             url = "\"" + url + "\"";
             domain = "\"" + domain + "\"";
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", API_KEY);
-            var request = _lastRequest = "{\"group_guid\": " + GROUP_GUID
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
+            var request = _lastRequest = "{\"group_guid\": " + _groupGuid
                 + ", \"domain\": " + domain
                 + ", \"long_url\": " + url
                 + "}";

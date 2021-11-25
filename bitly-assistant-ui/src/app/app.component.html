@@ -1,24 +1,20 @@
-<div style="padding-left: 2rem; padding-top: 2rem;">
+<div class="ps-3 pt-2 pe-3">
+  <h1 class="p-1">Bitly Assistant</h1>
+
   <div>
     Url:
     <input [(ngModel)]="currentUrl" />
+    Description:
+    <input [(ngModel)]="currentDescription" />
+    <button class="btn btn-primary ms-1" (click)="submitClicked()">Shorten Link</button>
   </div>
 
-  <div style="padding-top: 1rem;">
-    <button class="btn btn-primary" (click)="submitClicked()">Submit</button>
+  <div class="pt-3">
+    <app-link-table [Links]="items"></app-link-table>
   </div>
-
-  <table>
-    <thead>
-      <th>Short Url</th>
-      <th>Long Url</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of items">
-        <td>{{ item.short_link }}</td>
-        <td>{{ item.date_added }}</td>
-      </tr>
-    </tbody>
-  </table>
-
 </div>
+
+ 
+ 
+ 
+ 

@@ -1,0 +1,14 @@
+<table class="table table-striped w-100">
+  <thead>
+    <th scope="col">Short Url</th>
+    <th scope="col">Description</th>
+    <th scope="col">Date</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let link of Links">
+      <td>{{ link.short_link }}</td>
+      <td>{{ link.description === '' ? 'N/A' : link.description }}</td>
+      <td>{{ link.date_added }}</td>
+    </tr>
+  </tbody>
+</table>

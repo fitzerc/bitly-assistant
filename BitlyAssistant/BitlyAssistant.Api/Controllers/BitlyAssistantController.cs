@@ -73,7 +73,8 @@ namespace BitlyAssistant.Api.Controllers
                 short_link = bitlyResponse.link,
                 long_link = bitlyResponse.long_url,
                 request_id = shortRequestId,
-                response_id = shortResponseId
+                response_id = shortResponseId,
+                description = req.Description,
             };
 
             var newShortLink = WriteShortLink(tempShortLink);
